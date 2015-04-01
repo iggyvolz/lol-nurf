@@ -3,7 +3,12 @@ local function riot(rregion,key)
   assert(key,"key must be set")
   local r={}
   r.__index=r
-  local http=require "socket.http"
+  local function curl(u)
+    local f=io.popen("curl "..u)
+    local data=f:read("all")
+    f:close()
+    return data
+  end
   local burl="https://"..rregion..".api.pvp.net"
   local decode = require("json.decode")
   local function req(data)
@@ -11,7 +16,7 @@ local function riot(rregion,key)
     for i=1,#data do
       url=url.."/"..data[i]
     end
-    return decode(http.request(url.."?api_key="..key))
+    return decode(assert(curl(url.."?api_key="..key)))
   end
   function r.champion(region,id)
     assert(region,"region required")
