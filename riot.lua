@@ -8,7 +8,7 @@ local function riot(rregion,key)
   local decode = require("json.decode")
   local function req(data)
     local url=""..burl
-    for i=0,#data do
+    for i=1,#data do
       url=url.."/"..data[i]
     end
     return decode(http.request(url.."?api_key="..key))
